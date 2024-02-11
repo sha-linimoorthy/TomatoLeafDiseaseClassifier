@@ -3,6 +3,7 @@ import os
 from flask_cors import CORS, cross_origin
 from cnnClassifier.utils.common import decodeImage
 from cnnClassifier.pipeline.predict import PredictionPipeline
+from cnnClassifier.components.huggingface_api import call_huggingface_api  # Import the function
 
 
 os.putenv('LANG', 'en_US.UTF-8')
@@ -38,11 +39,14 @@ def predictRoute():
     image = request.json['image']
     decodeImage(image, clApp.filename)
     result = clApp.classifier.predict()
-    return jsonify(result)
 
+    # Call Hugging Face API
+    huggingface_response = call_huggingface_api()  
+
+    return jsonify(result)
 
 if __name__ == "__main__":
     clApp = ClientApp()
-    app.run(host='0.0.0.0', port=8080) #local host
+    app.run(host='0.0.0.0', port=5000) #local host
     # app.run(host='0.0.0.0', port=8080) #for AWS
-    #app.run(host='0.0.0.0', port=80) #for AZURE
+    # app.run(host='0.0.0.0', port=80) #for AZURE
