@@ -43,24 +43,14 @@ def predictRoute():
 
 @app.route('/uploads/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
-    # Text content to be downloaded
-    content = """
-    Precautions:
-    Utilize pathogen-free seeds and disease-free transplants whenever possible to minimize the risk of bacterial spot.
-    Avoid sprinkler irrigation and the accumulation of cull piles near greenhouse or field operations to prevent disease spread.
-    Rotate crops with non-host plants to break the disease cycle and reduce pathogen buildup in the soil.
-
-    Pesticides:
-    Copper Hydroxide (Kocide 3000): Apply at a rate of 0.75–1.75 lb per acre. This multi-site contact fungicide acts as a protectant against bacterial spot. It has a restricted entry interval (REI) of 48 hours and no preharvest interval (PHI).
-
-    Copper Hydroxide (Kocide 3000) + Mancozeb (Dithane M-45, Dithane F-45 Rainshield, Penncozeb 75DF): This combination enhances the efficacy of copper in controlling bacterial spot. Copper is applied at the same rate as above, while mancozeb is applied at a rate of 2 lb or 1.6 qt per acre. Both products have an REI of 24 hours and a PHI of 5 days.
-
-    Disclaimer: It is essential to adhere to label instructions and consult with agricultural experts or local extension services before applying pesticides. Consider environmental impact and follow all safety precautions during pesticide application.
-
-    Please note that the information provided is based on UC IPM Pest Management Guidelines for Tomato and should be used as a reference for disease management practices.
-    """
     uploads = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
     return send_from_directory(uploads, filename)
+
+@app.route('/download/precautions', methods=['GET'])
+def download_precautions():
+    # Path to the precautions file
+    precautions_file = r'D:\classifier\TomatoLeafDiseaseClassifier\upload_folder\precautions.txt'
+    return send_from_directory(app.root_path, precautions_file, as_attachment=True)
 
 if __name__ == "__main__":
     clApp = ClientApp()
